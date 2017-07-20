@@ -15,6 +15,7 @@ package com.cyanogenmod.eleven.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +85,7 @@ public class ArtistAdapter extends ArrayAdapter<Artist> implements BasicAdapter,
         // Initialize the cache & image fetcher
         mImageFetcher = ApolloUtils.getImageFetcher(context);
         // Cache the transparent overlay
-        mOverlay = context.getResources().getColor(R.color.list_item_background);
+        mOverlay = ContextCompat.getColor(context, R.color.list_item_background);
     }
 
     /**

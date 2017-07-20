@@ -49,7 +49,7 @@
                 android:layout_height="@dimen/preview_layout_seekbar_height"/>
 
             <ProgressBar
-                style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
+                style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
                 android:id="@+id/pb_loader"
                 android:indeterminate="true"
                 android:visibility="invisible"

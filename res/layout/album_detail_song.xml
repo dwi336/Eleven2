@@ -1,4 +1,6 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="70dp" >
 
@@ -34,18 +36,20 @@
         android:layout_marginLeft="@dimen/list_item_general_margin"
         android:gravity="center_vertical">
 
-        <TextView
+    <com.cyanogenmod.eleven.widgets.RobotoTextView
             android:id="@+id/title"
             style="@style/ListItemMainText.Single"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" 
+            sothree:typeface="roboto_regular" />
 
-        <TextView
+        <com.cyanogenmod.eleven.widgets.RobotoTextView
             android:id="@+id/duration"
             style="@style/ListItemSecondaryText.Single"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/title" />
+            android:layout_below="@id/title"
+            sothree:typeface="roboto_light" />
 
     </RelativeLayout>
 

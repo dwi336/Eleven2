@@ -22,16 +22,21 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.Window;
+
+import java.lang.reflect.Method;
 
 import com.cyanogenmod.eleven.Config;
 import com.cyanogenmod.eleven.R;
@@ -53,6 +58,11 @@ import com.cyanogenmod.eleven.utils.NavUtils;
 
 public class HomeActivity extends SlidingPanelActivity implements
         FragmentManager.OnBackStackChangedListener {
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+	
     private static final String TAG = "HomeActivity";
     private static final String ACTION_PREFIX = HomeActivity.class.getName();
     public static final String ACTION_VIEW_ARTIST_DETAILS = ACTION_PREFIX + ".view.ArtistDetails";
@@ -154,7 +164,6 @@ public class HomeActivity extends SlidingPanelActivity implements
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-
         // parse intent to ascertain whether the intent is inter UI communication
         boolean intentHandled = parseIntentForFragment(intent);
         // since this activity is marked 'singleTop' (launch mode), an existing activity instance
@@ -213,7 +222,7 @@ public class HomeActivity extends SlidingPanelActivity implements
 
     private void updateVisualizerColor(int color) {
         if (color == Color.TRANSPARENT) {
-            color = getResources().getColor(R.color.visualizer_fill_color);
+            color = ContextCompat.getColor(this, R.color.visualizer_fill_color);
         }
 
         // check for null since updatestatusBarColor is a async task
@@ -224,15 +233,26 @@ public class HomeActivity extends SlidingPanelActivity implements
     }
 
     private void updateStatusBarColor(int color) {
-        if (color == Color.TRANSPARENT) {
-            color = getResources().getColor(R.color.primary_dark);
+    	if (color == Color.TRANSPARENT) {
+            color = ContextCompat.getColor(this, R.color.primary_dark);
         }
         final Window window = getWindow();
-        ObjectAnimator animator = ObjectAnimator.ofInt(window,
-                "statusBarColor", window.getStatusBarColor(), color);
-        animator.setEvaluator(new ArgbEvaluator());
-        animator.setDuration(300);
-        animator.start();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){           
+            //statusBarColor = window.getStatusBarColor();
+            int statusBarColor = 0;
+            try {
+            	Class<?> clazz = window.getClass();
+                Method m = clazz.getMethod("getStatusBarColor",  new Class[] {} );
+                statusBarColor = ((Integer)(m.invoke(window, new Object[] {}))).intValue();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+            ObjectAnimator animator = ObjectAnimator.ofInt(window,
+                    "statusBarColor", statusBarColor, color);
+            animator.setEvaluator(new ArgbEvaluator());
+            animator.setDuration(300);
+            animator.start();
+        }
     }
 
     private boolean parseIntentForFragment(Intent intent) {
@@ -281,7 +301,7 @@ public class HomeActivity extends SlidingPanelActivity implements
                     // this happens when they launch search which is its own activity and then
                     // browse through that back to home activity
                     mLoadedBaseFragment = true;
-                    getActionBar().setDisplayHomeAsUpEnabled(true);
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 }
                 // the current top fragment is about to be hidden by what we are replacing
                 // it with -- so tell that fragment not to make its action bar menu items visible
@@ -462,7 +482,7 @@ public class HomeActivity extends SlidingPanelActivity implements
             ISetupActionBar setupActionBar = (ISetupActionBar) topFragment;
             setupActionBar.setupActionBar();
 
-            getActionBar().setDisplayHomeAsUpEnabled(
+            getSupportActionBar().setDisplayHomeAsUpEnabled(
                     !(topFragment instanceof MusicBrowserPhoneFragment));
         }
     }

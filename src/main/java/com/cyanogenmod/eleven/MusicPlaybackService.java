@@ -16,6 +16,7 @@ package com.cyanogenmod.eleven;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
+import android.support.v7.app.NotificationCompat;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -34,12 +35,13 @@ import android.graphics.Bitmap;
 import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.media.AudioManager.OnAudioFocusChangeListener;
-import android.media.MediaMetadata;
+import android.support.v4.media.MediaMetadataCompat;
 import android.media.MediaPlayer;
 import android.media.audiofx.AudioEffect;
-import android.media.session.MediaSession;
-import android.media.session.PlaybackState;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -462,7 +464,7 @@ public class MusicPlaybackService extends Service {
     /**
      * Lock screen controls
      */
-    private MediaSession mSession;
+    private MediaSessionCompat mSession;
 
     private ComponentName mMediaButtonReceiverComponent;
 
@@ -689,8 +691,8 @@ public class MusicPlaybackService extends Service {
     }
 
     private void setUpMediaSession() {
-        mSession = new MediaSession(this, "Eleven");
-        mSession.setCallback(new MediaSession.Callback() {
+        mSession = new MediaSessionCompat(this, "Eleven");
+        mSession.setCallback(new MediaSessionCompat.Callback() {
             @Override
             public void onPause() {
                 pause();
@@ -720,7 +722,7 @@ public class MusicPlaybackService extends Service {
                 releaseServiceUiAndStop();
             }
         });
-        mSession.setFlags(MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS);
+        mSession.setFlags(MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
     }
 
     /**
@@ -1141,7 +1143,8 @@ public class MusicPlaybackService extends Service {
     private Cursor openCursorAndGoToFirst(Uri uri, String[] projection,
             String selection, String[] selectionArgs) {
         Cursor c = getContentResolver().query(uri, projection,
-                selection, selectionArgs, null, null);
+                    selection, selectionArgs, null);
+
         if (c == null) {
             return null;
         }
@@ -1504,11 +1507,11 @@ public class MusicPlaybackService extends Service {
 
     private void updateMediaSession(final String what) {
         int playState = mIsSupposedToBePlaying
-                ? PlaybackState.STATE_PLAYING
-                : PlaybackState.STATE_PAUSED;
+                ? PlaybackStateCompat.STATE_PLAYING
+                : PlaybackStateCompat.STATE_PAUSED;
 
         if (what.equals(PLAYSTATE_CHANGED) || what.equals(POSITION_CHANGED)) {
-            mSession.setPlaybackState(new PlaybackState.Builder()
+            mSession.setPlaybackState(new PlaybackStateCompat.Builder()
                     .setState(playState, position(), 1.0f).build());
         } else if (what.equals(META_CHANGED) || what.equals(QUEUE_CHANGED)) {
             Bitmap albumArt = getAlbumArt(false).getBitmap();
@@ -1522,20 +1525,20 @@ public class MusicPlaybackService extends Service {
                 albumArt = albumArt.copy(config, false);
             }
 
-            mSession.setMetadata(new MediaMetadata.Builder()
-                    .putString(MediaMetadata.METADATA_KEY_ARTIST, getArtistName())
-                    .putString(MediaMetadata.METADATA_KEY_ALBUM_ARTIST, getAlbumArtistName())
-                    .putString(MediaMetadata.METADATA_KEY_ALBUM, getAlbumName())
-                    .putString(MediaMetadata.METADATA_KEY_TITLE, getTrackName())
-                    .putLong(MediaMetadata.METADATA_KEY_DURATION, duration())
-                    .putLong(MediaMetadata.METADATA_KEY_TRACK_NUMBER, getQueuePosition() + 1)
-                    .putLong(MediaMetadata.METADATA_KEY_NUM_TRACKS, getQueue().length)
-                    .putString(MediaMetadata.METADATA_KEY_GENRE, getGenreName())
-                    .putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART,
+            mSession.setMetadata(new MediaMetadataCompat.Builder()
+                    .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, getArtistName())
+                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ARTIST, getAlbumArtistName())
+                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, getAlbumName())
+                    .putString(MediaMetadataCompat.METADATA_KEY_TITLE, getTrackName())
+                    .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, duration())
+                    .putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, getQueuePosition() + 1)
+                    .putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS, getQueue().length)
+                    .putString(MediaMetadataCompat.METADATA_KEY_GENRE, getGenreName())
+                    .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART,
                             mShowAlbumArtOnLockscreen ? albumArt : null)
                     .build());
 
-            mSession.setPlaybackState(new PlaybackState.Builder()
+            mSession.setPlaybackState(new PlaybackStateCompat.Builder()
                     .setState(playState, position(), 1.0f).build());
         }
     }
@@ -1552,7 +1555,7 @@ public class MusicPlaybackService extends Service {
         int playButtonTitleResId = isPlaying
                 ? R.string.accessibility_pause : R.string.accessibility_play;
 
-        Notification.MediaStyle style = new Notification.MediaStyle()
+        NotificationCompat.MediaStyle style = new NotificationCompat.MediaStyle()
                 .setMediaSession(mSession.getSessionToken())
                 .setShowActionsInCompactView(0, 1, 2);
 
@@ -1565,7 +1568,7 @@ public class MusicPlaybackService extends Service {
             mNotificationPostTime = System.currentTimeMillis();
         }
 
-        Notification.Builder builder = new Notification.Builder(this)
+        android.support.v4.app.NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setLargeIcon(artwork.getBitmap())
                 .setContentIntent(clickIntent)
@@ -1574,7 +1577,7 @@ public class MusicPlaybackService extends Service {
                 .setWhen(mNotificationPostTime)
                 .setShowWhen(false)
                 .setStyle(style)
-                .setVisibility(Notification.VISIBILITY_PUBLIC)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .addAction(R.drawable.btn_playback_previous,
                         getString(R.string.accessibility_prev),
                         retrievePlaybackAction(PREVIOUS_ACTION))
@@ -3057,14 +3060,61 @@ public class MusicPlaybackService extends Service {
         }
     }
 
+    private static final class CompatMediaPlayer extends MediaPlayer implements MediaPlayer.OnCompletionListener {
+
+        private boolean mCompatMode = true;
+        private MediaPlayer mNextPlayer;
+        private OnCompletionListener mCompletion;
+
+        public CompatMediaPlayer() {
+            try {
+                MediaPlayer.class.getMethod("setNextMediaPlayer", MediaPlayer.class);
+                mCompatMode = false;
+            } catch (NoSuchMethodException e) {
+                mCompatMode = true;
+                super.setOnCompletionListener(this);
+            }
+        }
+
+        public void setNextMediaPlayer(MediaPlayer next) {
+            if (mCompatMode) {
+                mNextPlayer = next;
+            } else {
+                super.setNextMediaPlayer(next);
+            }
+        }
+
+        @Override
+        public void setOnCompletionListener(OnCompletionListener listener) {
+            if (mCompatMode) {
+                mCompletion = listener;
+            } else {
+                super.setOnCompletionListener(listener);
+            }
+        }
+
+        @Override
+        public void onCompletion(MediaPlayer mp) {
+            if (mCompatMode && mNextPlayer != null) {
+                try {
+					mNextPlayer.prepare();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+                mNextPlayer.start();
+            }
+        }
+    }
+    
+    
     private static final class MultiPlayer implements MediaPlayer.OnErrorListener,
             MediaPlayer.OnCompletionListener {
 
         private final WeakReference<MusicPlaybackService> mService;
 
-        private MediaPlayer mCurrentMediaPlayer = new MediaPlayer();
+        private CompatMediaPlayer mCurrentMediaPlayer = new CompatMediaPlayer();
 
-        private MediaPlayer mNextMediaPlayer;
+        private CompatMediaPlayer mNextMediaPlayer;
 
         private Handler mHandler;
 
@@ -3177,7 +3227,9 @@ public class MusicPlaybackService extends Service {
         public void setNextDataSource(final String path) {
             mNextMediaPath = null;
             try {
-                mCurrentMediaPlayer.setNextMediaPlayer(null);
+            	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+                    mCurrentMediaPlayer.setNextMediaPlayer(null);
+            	}
             } catch (IllegalArgumentException e) {
                 Log.i(TAG, "Next media player is current one, continuing");
             } catch (IllegalStateException e) {
@@ -3191,7 +3243,7 @@ public class MusicPlaybackService extends Service {
             if (path == null) {
                 return;
             }
-            mNextMediaPlayer = new MediaPlayer();
+            mNextMediaPlayer = new CompatMediaPlayer();
             mNextMediaPlayer.setWakeMode(mService.get(), PowerManager.PARTIAL_WAKE_LOCK);
             mNextMediaPlayer.setAudioSessionId(getAudioSessionId());
             if (setDataSourceImpl(mNextMediaPlayer, path)) {
@@ -3326,7 +3378,7 @@ public class MusicPlaybackService extends Service {
 
                     mIsInitialized = false;
                     mCurrentMediaPlayer.release();
-                    mCurrentMediaPlayer = new MediaPlayer();
+                    mCurrentMediaPlayer = new CompatMediaPlayer();
                     mCurrentMediaPlayer.setWakeMode(service, PowerManager.PARTIAL_WAKE_LOCK);
                     Message msg = mHandler.obtainMessage(SERVER_DIED, errorInfo);
                     mHandler.sendMessageDelayed(msg, 2000);

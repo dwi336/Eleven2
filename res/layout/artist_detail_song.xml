@@ -1,4 +1,6 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="70dp" >
 
@@ -36,7 +38,7 @@
             android:src="@drawable/menu_button" />
     </LinearLayout>
 
-    <TextView
+    <com.cyanogenmod.eleven.widgets.RobotoTextView
         android:id="@+id/title"
         style="@style/ListItemMainText.Single"
         android:layout_width="match_parent"
@@ -44,9 +46,10 @@
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@id/right_container"
         android:layout_toRightOf="@id/album_art"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp" 
+        sothree:typeface="roboto_regular" />
 
-    <TextView
+    <com.cyanogenmod.eleven.widgets.RobotoTextView
         android:id="@+id/album"
         style="@style/ListItemSecondaryText.Single"
         android:layout_width="match_parent"
@@ -54,7 +57,8 @@
         android:layout_below="@id/title"
         android:layout_toRightOf="@id/album_art"
         android:layout_toLeftOf="@id/right_container"
-        android:layout_marginTop="-2dp" />
+        android:layout_marginTop="-2dp"
+        sothree:typeface="roboto_light" />
 
     <ImageView
         android:id="@+id/divider"

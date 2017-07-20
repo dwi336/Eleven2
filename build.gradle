@@ -1,0 +1,99 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.0'
+    }
+}
+
+apply plugin: 'com.android.application'
+
+repositories {
+    jcenter()
+    maven {
+        url "https://maven.google.com"
+    }
+}
+
+android {
+	compileSdkVersion 25
+	buildToolsVersion "25.0.3"
+	
+	defaultConfig {
+	    applicationId "com.cyanogenmod.eleven"
+        targetSdkVersion 25
+        renderscriptTargetApi 25
+        renderscriptSupportModeEnabled true
+        versionCode 2
+        versionName "2.0"
+
+        jackOptions {
+            enabled true
+        }
+        vectorDrawables.useSupportLibrary = true  
+    }
+    
+    signingConfigs {
+        release {
+            storeFile file("/home/didi/eclipse/DevStore")
+            storePassword "test123"
+            keyAlias "TestKey"
+            keyPassword "1234567890"
+        }
+    }
+    
+    compileOptions {
+        sourceCompatibility "1.8"
+        targetCompatibility "1.8"
+    }
+	
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
+            signingConfig signingConfigs.release
+        }
+    }
+	
+	lintOptions {
+        // Android Support Libraries has different Versions because of use of RenderScript
+        disable 'GradleCompatible'
+        disable 'ExtraTranslation', 'MissingTranslation', 'MissingQuantity'
+    }
+	
+	sourceSets {
+		main {
+			manifest {
+				srcFile 'AndroidManifest.xml'
+			}
+			java {
+				srcDir 'src'
+			}
+			res {
+				srcDir 'res'
+			}
+			assets {
+				srcDir 'assets'
+			}
+			resources {
+				srcDir 'src'
+			}
+			aidl {
+				srcDir 'src'
+			}
+		}
+	}
+
+	dependencies {
+        compile "com.android.support:appcompat-v7:25.4.0"
+        compile "com.android.support:palette-v7:25.4.0"
+        compile "com.android.support:recyclerview-v7:25.4.0"
+        compile "com.android.support:support-v4:25.4.0"
+        compile "com.android.support:cardview-v7:25.4.0"
+        compile "com.android.support:preference-v7:25.4.0"
+        compile 'com.android.support:gridlayout-v7:25.4.0'
+        compile 'com.google.guava:guava:17.0'
+        compile fileTree(include: ['*.jar'], dir: 'libs')
+    }
+}

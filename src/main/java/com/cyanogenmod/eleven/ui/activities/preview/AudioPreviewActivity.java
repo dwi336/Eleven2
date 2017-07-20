@@ -34,7 +34,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore.Audio.Media;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -539,21 +538,17 @@ public class AudioPreviewActivity extends Activity implements MediaPlayer.OnComp
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.ib_playpause:
-                if (mCurrentState == State.PREPARED || mCurrentState == State.PAUSED) {
-                    startPlayback();
-                } else {
-                    pausePlayback();
-                }
-                break;
-            case R.id.grp_transparent_wrapper:
-                stopPlaybackAndTeardown();
-                finish();
-                break;
-            default:
-                break;
-        }
+    	int id = v.getId();
+    	if (id==R.id.ib_playpause){
+            if (mCurrentState == State.PREPARED || mCurrentState == State.PAUSED) {
+                startPlayback();
+            } else {
+                pausePlayback();
+            }	
+    	} else if (id==R.id.grp_transparent_wrapper){
+            stopPlaybackAndTeardown();
+            finish();
+    	}
     }
 
     private boolean gainAudioFocus() {

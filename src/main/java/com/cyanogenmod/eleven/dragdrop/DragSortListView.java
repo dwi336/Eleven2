@@ -18,6 +18,7 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -395,7 +396,7 @@ public class DragSortListView extends ListView {
         mController.setSortEnabled(true);
         /* Transparent holo light blue */
         mController
-                .setBackgroundColor(getResources().getColor(R.color.holo_blue_light_transparent));
+                .setBackgroundColor(ContextCompat.getColor(context,R.color.holo_blue_light_transparent));
 
         mFloatViewManager = mController;
         setOnTouchListener(mController);

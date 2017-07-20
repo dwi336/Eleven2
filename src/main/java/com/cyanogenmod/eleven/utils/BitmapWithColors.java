@@ -82,7 +82,7 @@ public class BitmapWithColors {
             return;
         }
 
-        final Palette p = Palette.generate(mBitmap);
+        final Palette p = Palette.from(mBitmap).generate();
         if (p == null) {
             return;
         }

@@ -12,7 +12,9 @@
 package com.cyanogenmod.eleven.widgets;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.SystemClock;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -47,7 +49,11 @@ public class RepeatingImageButton extends ImageButton implements OnClickListener
     public RepeatingImageButton(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         setPadding(0, 0, 0, 0);
-        setBackground(getResources().getDrawable(R.drawable.selectable_background));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        	setBackground(ContextCompat.getDrawable(context, R.drawable.selectable_background));
+        } else {
+        	setBackgroundResource(R.drawable.selectable_background);
+        }
         setFocusable(true);
         setLongClickable(true);
         setOnClickListener(this);
@@ -59,14 +65,11 @@ public class RepeatingImageButton extends ImageButton implements OnClickListener
      */
     @Override
     public void onClick(final View view) {
-        switch (view.getId()) {
-            case R.id.action_button_previous:
-                MusicUtils.previous(getContext(), false);
-                break;
-            case R.id.action_button_next:
-                MusicUtils.next();
-            default:
-                break;
+        int id = view.getId();
+        if (id == R.id.action_button_previous){
+            MusicUtils.previous(getContext(), false);
+        } else if (id == R.id.action_button_next){
+            MusicUtils.next();
         }
     }
 
@@ -172,15 +175,11 @@ public class RepeatingImageButton extends ImageButton implements OnClickListener
      * Sets the correct drawable for playback.
      */
     public void updateState() {
-        switch (getId()) {
-            case R.id.action_button_next:
-                setImageDrawable(getResources().getDrawable(R.drawable.btn_playback_next));
-                break;
-            case R.id.action_button_previous:
-                setImageDrawable(getResources().getDrawable(R.drawable.btn_playback_previous));
-                break;
-            default:
-                break;
+        int id = getId();
+        if (id == R.id.action_button_next) {
+            setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.btn_playback_next));
+        } else if (id == R.id.action_button_previous) {
+            setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.btn_playback_previous));
         }
     }
 

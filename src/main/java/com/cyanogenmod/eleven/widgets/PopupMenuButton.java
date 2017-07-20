@@ -17,6 +17,8 @@
 package com.cyanogenmod.eleven.widgets;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -32,7 +34,11 @@ public class PopupMenuButton extends ImageView implements IPopupMenuCallback,
         super(context, attrs);
 
         setScaleType(ScaleType.CENTER_INSIDE);
-        setBackground(getResources().getDrawable(R.drawable.selectable_background_light));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setBackground(ContextCompat.getDrawable(getContext(),R.drawable.selectable_background_light));
+        } else {
+            setBackgroundResource(R.drawable.selectable_background_light);
+        }
         setOnClickListener(this);
     }
 

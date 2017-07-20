@@ -1,6 +1,8 @@
 package com.cyanogenmod.eleven.widgets;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -19,7 +21,11 @@ public abstract class AudioButton extends ImageButton implements OnClickListener
     public AudioButton(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         setPadding(0, 0, 0, 0);
-        setBackground(getResources().getDrawable(R.drawable.selectable_background));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        	setBackground(ContextCompat.getDrawable(context, R.drawable.selectable_background));
+        } else {
+            setBackgroundResource(R.drawable.selectable_background);
+        }
         // Control playback (cycle shuffle)
         setOnClickListener(this);
         // Show the cheat sheet

@@ -13,7 +13,9 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_normal_height"
     android:gravity="center_vertical"
@@ -38,17 +40,19 @@
         android:layout_toRightOf="@id/image"
         android:paddingLeft="@dimen/list_item_queue_text_padding_left"
         android:orientation="vertical">
-        <TextView
+        <com.cyanogenmod.eleven.widgets.RobotoTextView
             android:id="@+id/line_one"
             style="@style/ListItemMainText.Light.Single"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            sothree:typeface="roboto_regular" />
 
-        <TextView
+        <com.cyanogenmod.eleven.widgets.RobotoTextView
             android:id="@+id/line_two"
             style="@style/ListItemSecondaryText.Light.Single"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            sothree:typeface="roboto_light" />
     </LinearLayout>
 
     <FrameLayout

@@ -17,10 +17,14 @@
 <resources>
     <!-- Material -->
     <color name="primary">#607D8B</color>
+    <color name="primary_pressed">#77607D8B</color>
+    <color name="primary_focused">#cc607D8B</color>
     <color name="primary_dark">#455A64</color>
     <color name="primary_light">#78909C</color>
     <color name="accent">#3f51b5</color>
 
+    <color name="material_pesto">#00968c</color>
+    
     <!-- light color -->
     <color name="background_color">#ffe4e9ed</color>
 
@@ -91,7 +95,9 @@
     <color name="grid_list_item_text_color">#b3231f20</color>
 
     <!-- Top title page colors -->
-    <color name="tab_ripple_color">#ffffff</color>
+    <color name="tab_ripple_color">#ffffffff</color>
+    <color name="tab_ripple_color_pressed">#77ffffff</color>
+    <color name="tab_ripple_color_focused">#ccffffff</color>
     <color name="tab_accent_color">#ffffff</color>
     <color name="tab_selected_underline_color">#ffffff</color>
 
