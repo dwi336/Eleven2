@@ -20,18 +20,18 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageButton;
+import android.support.v7.widget.AppCompatImageButton;
 
 import com.cyanogenmod.eleven.R;
 import com.cyanogenmod.eleven.utils.ApolloUtils;
 import com.cyanogenmod.eleven.utils.MusicUtils;
 
 /**
- * A {@link ImageButton} that will repeatedly call a 'listener' method as long
+ * A {@link AppCompatImageButton} that will repeatedly call a 'listener' method as long
  * as the button is pressed, otherwise functions like a typecal
- * {@link ImageButton}
+ * {@link AppCompatImageButton}
  */
-public class RepeatingImageButton extends ImageButton implements OnClickListener {
+public class RepeatingImageButton extends AppCompatImageButton implements OnClickListener {
 
     private static final long sInterval = 400;
 

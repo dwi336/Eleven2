@@ -21,18 +21,18 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.widget.ImageButton;
+import android.support.v7.widget.AppCompatImageButton;
 
 import com.cyanogenmod.eleven.R;
 import com.cyanogenmod.eleven.utils.ApolloUtils;
 import com.cyanogenmod.eleven.utils.MusicUtils;
 
 /**
- * A custom {@link ImageButton} that represents the "play and pause" button.
+ * A custom {@link AppCompatImageButton} that represents the "play and pause" button.
  *
  * @author Andrew Neal (andrewdneal@gmail.com)
  */
-public class PlayPauseButton extends ImageButton implements OnClickListener, OnLongClickListener {
+public class PlayPauseButton extends AppCompatImageButton implements OnClickListener, OnLongClickListener {
 
     /**
      * Play button theme resource

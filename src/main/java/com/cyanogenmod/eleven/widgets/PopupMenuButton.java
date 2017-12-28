@@ -21,11 +21,11 @@ import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
+import android.support.v7.widget.AppCompatImageView;
 
 import com.cyanogenmod.eleven.R;
 
-public class PopupMenuButton extends ImageView implements IPopupMenuCallback,
+public class PopupMenuButton extends AppCompatImageView implements IPopupMenuCallback,
         View.OnClickListener {
     protected int mPosition = -1;
     protected IListener mClickListener = null;

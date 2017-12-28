@@ -33,7 +33,7 @@ import com.cyanogenmod.eleven.ui.activities.HomeActivity;
  */
 public class MediaButtonIntentReceiver extends WakefulBroadcastReceiver {
     private static final boolean DEBUG = false;
-    private static final String TAG = "MediaButtonIntentReceiver";
+    private static final String TAG = "MediaButtonIntentRecei";
 
     private static final int MSG_LONGPRESS_TIMEOUT = 1;
     private static final int MSG_HEADSET_DOUBLE_CLICK_TIMEOUT = 2;

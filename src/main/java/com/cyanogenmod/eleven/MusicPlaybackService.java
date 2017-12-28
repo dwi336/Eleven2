@@ -16,7 +16,8 @@ package com.cyanogenmod.eleven;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.media.app.NotificationCompat.MediaStyle;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -1555,7 +1556,7 @@ public class MusicPlaybackService extends Service {
         int playButtonTitleResId = isPlaying
                 ? R.string.accessibility_pause : R.string.accessibility_play;
 
-        NotificationCompat.MediaStyle style = new NotificationCompat.MediaStyle()
+        MediaStyle style = new MediaStyle()
                 .setMediaSession(mSession.getSessionToken())
                 .setShowActionsInCompactView(0, 1, 2);
 
